@@ -67,6 +67,7 @@ database.ref().on("value", function(snapshot) {
     dest = snapshot.val().dest;
     timeTrain = snapshot.val().timeTrain;
     frequency = snapshot.val().frequency;
+    tMinutesTillTrain = snapshot.val().tMinutesTillTrain;
 
 
     
@@ -85,10 +86,11 @@ $("#search").on("click", function(){
     
     event.preventDefault();
 
-   
- 
 
+    trainName = $("#trainName").val();
+    dest = $("#dest").val();
     
+    frequency = parseInt($("#frequency").val().trim());
 
     // Time is 3:30 AM
     var firstTime = $("#timeTrain").val();
@@ -119,17 +121,13 @@ $("#search").on("click", function(){
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
-    trainName = $("#trainName").val();
-    dest = $("#dest").val();
     timeTrain = moment(nextTrain).format("hh:mm");  
-    frequency = parseInt($("#frequency").val().trim());
-
     
     database.ref().set({
        
         trainName: trainName,
         dest: dest,
-        timeTrain: timeTrain,
+        timeTrain: moment(nextTrain).format("hh:mm"),
         frequency: frequency,
         tMinutesTillTrain: tMinutesTillTrain
 
