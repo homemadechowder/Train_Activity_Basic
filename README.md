@@ -37,11 +37,11 @@ The javascript portion is separated into 3 sections, the firebase config, the da
 
 Firebase 7.0.3 is linked in the html file and the CDN is copied from the firebase dashboard. Then firebase is initialized and database is linked.
 
-#### database snapshot
+#### Database snapshot
 
 A database.ref() for snapshot getting is created to get value from firebase by snapshotting and storing it into a variable. I then append these values onto the table created in the html file.
 
-#### submit button onclick function
+#### Submit button onclick function
 
 I started the function with an event.preventDefault(). to stop the webpage from refreshing. I parsed the input values from the formgroups created in the html section. I used moment js to get current time to set as a reference for the values that were to be calculated. 
 
