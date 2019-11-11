@@ -44,44 +44,96 @@ var firebaseConfig = {
         measurementId: "G-PYZLS1Z8GT"
       };
       // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+    firebase.initializeApp(firebaseConfig);
+
   // Create a variable to reference the database
-  var database = firebase.database();
+    var database = firebase.database();
+
+    var trainName;
+    var dest;
+    var timeTrain;
+    var frequency = 0;
+    var currentTime;
+    var tMinutesTillTrain;
+    
+    $(".table").append('<td><strong>Train Name<td><strong>Destination<td><strong>Frequency(mins)<td><strong>Next Arrival<td><strong>Minutes Away');
 
 database.ref().on("value", function(snapshot) {
-    
-    var table = $("<td>");
 
-    var tFrequency = parseInt($("#frequency").text());
+ 
+  if (snapshot.child("trainName").exists() && snapshot.child("dest").exists()&& snapshot.child("timeTrain").exists() &&snapshot.child("frequency").exists()) {
+
+    trainName = snapshot.val().trainName;
+    dest = snapshot.val().dest;
+    timeTrain = snapshot.val().timeTrain;
+    frequency = snapshot.val().frequency;
+
+
+    
+    $(".table").append('<tr><td>'+trainName +'<td>'+ dest +'<td>'+ frequency +'<td>'+ timeTrain +'<td>'+tMinutesTillTrain);
+  }
+
+ 
+
+  // If any errors are experienced, log them to console.
+}, function(errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+ 
+  
+$("#search").on("click", function(){
+    
+    event.preventDefault();
+
+   
+ 
+
+    
 
     // Time is 3:30 AM
-    var firstTime = "03:30";
+    var firstTime = $("#timeTrain").val();
+    console.log(firstTime);
 
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
-    $(".table").append('<tr><td>' + firstTimeConverted + '</td></tr>')
+    
 
     // Current Time
-    var currentTime = moment();
+    currentTime = moment();
     console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-
+    
     // Difference between the times
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
     console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    var tRemainder = diffTime % tFrequency;
+    var tRemainder = diffTime % frequency;
     console.log(tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = tFrequency - tRemainder;
+    tMinutesTillTrain = frequency - tRemainder;
     console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+    trainName = $("#trainName").val();
+    dest = $("#dest").val();
+    timeTrain = moment(nextTrain).format("hh:mm");  
+    frequency = parseInt($("#frequency").val().trim());
+
+    
+    database.ref().set({
+       
+        trainName: trainName,
+        dest: dest,
+        timeTrain: timeTrain,
+        frequency: frequency,
+        tMinutesTillTrain: tMinutesTillTrain
+
+    });
 
 
 
