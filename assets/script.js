@@ -32,6 +32,22 @@
     // 5 + 3:16 = 3:21
 
     // Assumptions
+
+var firebaseConfig = {
+        apiKey: "AIzaSyD_GnbDlRayXW3EIdKECBhVBrQSNEh_rhg",
+        authDomain: "hello-world-2-e6b58.firebaseapp.com",
+        databaseURL: "https://hello-world-2-e6b58.firebaseio.com",
+        projectId: "hello-world-2-e6b58",
+        storageBucket: "hello-world-2-e6b58.appspot.com",
+        messagingSenderId: "799724841835",
+        appId: "1:799724841835:web:369fe3759d34cfcf6c3a2e",
+        measurementId: "G-B7Z3JWP6TR"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+
+ $(document).ready(function(){
     var tFrequency = 3;
 
     // Time is 3:30 AM
@@ -60,3 +76,5 @@
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+
+ })
