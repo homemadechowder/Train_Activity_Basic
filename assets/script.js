@@ -40,15 +40,20 @@ var firebaseConfig = {
         projectId: "hello-world-2-e6b58",
         storageBucket: "hello-world-2-e6b58.appspot.com",
         messagingSenderId: "799724841835",
-        appId: "1:799724841835:web:369fe3759d34cfcf6c3a2e",
-        measurementId: "G-B7Z3JWP6TR"
+        appId: "1:799724841835:web:6b18fa2b649b8f4c6c3a2e",
+        measurementId: "G-PYZLS1Z8GT"
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      var database = firebase.database();
+      firebase.analytics();
+  // Create a variable to reference the database
+  var database = firebase.database();
 
- $(document).ready(function(){
-    var tFrequency = 3;
+database.ref().on("value", function(snapshot) {
+    
+    var table = $("<td>");
+
+    var tFrequency = parseInt($("#frequency").text());
 
     // Time is 3:30 AM
     var firstTime = "03:30";
@@ -56,6 +61,7 @@ var firebaseConfig = {
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
+    $(".table").append('<tr><td>' + firstTimeConverted + '</td></tr>')
 
     // Current Time
     var currentTime = moment();
@@ -77,4 +83,6 @@ var firebaseConfig = {
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
- })
+
+
+ });
